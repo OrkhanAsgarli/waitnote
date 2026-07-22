@@ -1,5 +1,5 @@
 import '../database/app_database.dart';
-
+import '../database/daos/category_dao.dart';
 class CategoryRepository {
   final CategoryDao _dao;
 

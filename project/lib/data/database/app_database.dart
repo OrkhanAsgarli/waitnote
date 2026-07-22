@@ -1,7 +1,7 @@
 import 'package:drift/drift.dart';
 
 import 'connection/database_connection.dart';
-
+import 'enums.dart';
 // Tables
 import 'tables/categories.dart';
 import 'tables/products.dart';

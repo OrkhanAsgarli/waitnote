@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../shared/widgets/app_button.dart';
-import '../../../shared/widgets/app_text_field.dart';
+import '../../../shared/widgets/buttons/app_button.dart';
+import '../../../shared/widgets/forms/app_text_field.dart';
 
 class AddTableDialog extends StatefulWidget {
   const AddTableDialog({super.key});
