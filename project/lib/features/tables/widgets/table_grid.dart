@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
+import '../../../data/database/app_database.dart';
 import '../../../shared/widgets/layouts/responsive_grid.dart';
-import '../data/mock_tables.dart';
 import 'table_card.dart';
 
 class TableGrid extends StatelessWidget {
-  final List<MockTable> tables;
+  final List<RestaurantTable> tables;
 
   const TableGrid({
     super.key,
@@ -23,7 +23,7 @@ class TableGrid extends StatelessWidget {
           tableName: table.name,
           capacity: table.capacity,
           status: table.status,
-          totalAmount: table.total,
+          totalAmount: 0, // hələlik
           onTap: () {
             // TODO: Open Order Screen
           },

@@ -1,27 +1,11 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../data/mock_tables.dart';
+import '../../../data/database/app_database.dart';
+import '../../../data/repositories/table_repository.dart';
+import '../../../data/database/providers/database_provider.dart';
 
 final tableProvider =
-    StateNotifierProvider<TableNotifier, List<MockTable>>(
-  (ref) => TableNotifier(),
-);
-
-class TableNotifier extends StateNotifier<List<MockTable>> {
-  TableNotifier() : super(mockTables);
-
-  void addTable(MockTable table) {
-    state = [...state, table];
-  }
-
-  void removeTable(int id) {
-    state = state.where((t) => t.id != id).toList();
-  }
-
-  void updateTable(MockTable table) {
-    state = [
-      for (final t in state)
-        if (t.id == table.id) table else t,
-    ];
-  }
-}
+    StreamProvider<List<RestaurantTable>>((ref) {
+  final repository = ref.watch(tableRepositoryProvider);
+  return repository.watchAll();
+});

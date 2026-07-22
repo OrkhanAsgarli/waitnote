@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../shared/widgets/forms/app_search_bar.dart';
 import '../../../shared/widgets/states/app_empty.dart';
-import '../data/mock_tables.dart';
 import '../widgets/table_filter_chips.dart';
 import '../widgets/table_grid.dart';
 import '../dialogs/add_table_dialog.dart';
@@ -29,31 +28,11 @@ class _TablesPageState extends ConsumerState<TablesPage> {
     super.dispose();
   }
 
-List<MockTable> get filteredTables {
-  final tables = ref.watch(tableProvider);
-  final query = _searchController.text.toLowerCase();
 
-  return tables.where((table) {
-    final matchesSearch =
-        table.name.toLowerCase().contains(query);
-
-    final matchesFilter = switch (_filter) {
-      TableFilter.all => true,
-      TableFilter.available =>
-          table.status == TableStatus.available,
-      TableFilter.occupied =>
-          table.status == TableStatus.occupied,
-      TableFilter.reserved =>
-          table.status == TableStatus.reserved,
-    };
-
-    return matchesSearch && matchesFilter;
-  }).toList();
-}
 
   @override
   Widget build(BuildContext context) {
-    final tables = filteredTables;
+    final tablesAsync = ref.watch(tableProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -106,14 +85,45 @@ List<MockTable> get filteredTables {
           const SizedBox(height: 16),
 
           Expanded(
-            child: tables.isEmpty
-                ? const AppEmpty(
-                    title: "Masa tapılmadı",
-                  )
-                : TableGrid(
-                    tables: tables,
-                  ),
-          ),
+  child: tablesAsync.when(
+    loading: () => const Center(
+      child: CircularProgressIndicator(),
+    ),
+    error: (e, _) => Center(
+      child: Text(e.toString()),
+    ),
+    data: (tables) {
+      final query = _searchController.text.toLowerCase();
+
+      final filtered = tables.where((table) {
+        final matchesSearch =
+            table.name.toLowerCase().contains(query);
+
+        final matchesFilter = switch (_filter) {
+          TableFilter.all => true,
+          TableFilter.available =>
+              table.status == TableStatus.available,
+          TableFilter.occupied =>
+              table.status == TableStatus.occupied,
+          TableFilter.reserved =>
+              table.status == TableStatus.reserved,
+        };
+
+        return matchesSearch && matchesFilter;
+      }).toList();
+
+      if (filtered.isEmpty) {
+        return const AppEmpty(
+          title: "Masa tapılmadı",
+        );
+      }
+
+      return TableGrid(
+        tables: filtered,
+      );
+    },
+  ),
+),
         ],
       ),
     );
