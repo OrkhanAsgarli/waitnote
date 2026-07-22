@@ -22,8 +22,7 @@ class OrderItems extends Table {
   TextColumn get note => text().nullable()();
 
   IntColumn get status =>
-      intEnum<OrderItemStatus>()
-          .withDefault(const Constant(OrderItemStatus.ordered))();
+    intEnum<OrderItemStatus>().withDefault(const Constant(0))();
 
   DateTimeColumn get createdAt =>
       dateTime().withDefault(currentDateAndTime)();

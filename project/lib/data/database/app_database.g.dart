@@ -1170,7 +1170,7 @@ class $RestaurantTablesTable extends RestaurantTables
         false,
         type: DriftSqlType.int,
         requiredDuringInsert: false,
-        defaultValue: const Constant(TableStatus.available),
+        defaultValue: const Constant(0),
       ).withConverter<TableStatus>($RestaurantTablesTable.$converterstatus);
   static const VerificationMeta _createdAtMeta = const VerificationMeta(
     'createdAt',
@@ -1639,7 +1639,7 @@ class $OrdersTable extends Orders with TableInfo<$OrdersTable, Order> {
     false,
     type: DriftSqlType.int,
     requiredDuringInsert: false,
-    defaultValue: const Constant(PaymentStatus.unpaid),
+    defaultValue: const Constant(0),
   ).withConverter<PaymentStatus>($OrdersTable.$converterpaymentStatus);
   static const VerificationMeta _createdAtMeta = const VerificationMeta(
     'createdAt',
@@ -2212,7 +2212,7 @@ class $OrderItemsTable extends OrderItems
         false,
         type: DriftSqlType.int,
         requiredDuringInsert: false,
-        defaultValue: const Constant(OrderItemStatus.ordered),
+        defaultValue: const Constant(0),
       ).withConverter<OrderItemStatus>($OrderItemsTable.$converterstatus);
   static const VerificationMeta _createdAtMeta = const VerificationMeta(
     'createdAt',

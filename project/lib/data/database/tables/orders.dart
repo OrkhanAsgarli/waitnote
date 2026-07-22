@@ -17,8 +17,7 @@ class Orders extends Table {
       boolean().withDefault(const Constant(false))();
 
   IntColumn get paymentStatus =>
-      intEnum<PaymentStatus>()
-          .withDefault(const Constant(PaymentStatus.unpaid))();
+    intEnum<PaymentStatus>().withDefault(const Constant(0))();
 
   DateTimeColumn get createdAt =>
       dateTime().withDefault(currentDateAndTime)();

@@ -15,8 +15,7 @@ class RestaurantTables extends Table {
       integer().withDefault(const Constant(0))();
 
   IntColumn get status =>
-      intEnum<TableStatus>()
-          .withDefault(const Constant(TableStatus.available))();
+    intEnum<TableStatus>().withDefault(const Constant(0))();
 
   DateTimeColumn get createdAt =>
       dateTime().withDefault(currentDateAndTime)();
