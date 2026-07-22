@@ -1,5 +1,6 @@
-import 'package:project/data/database/app_database.dart';
 import 'package:project/data/database/daos/table_dao.dart';
+
+import '../database/app_database.dart';
 
 class TableRepository {
   final TableDao _dao;

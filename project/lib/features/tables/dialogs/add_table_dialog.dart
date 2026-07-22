@@ -2,15 +2,20 @@ import 'package:flutter/material.dart';
 
 import '../../../shared/widgets/buttons/app_button.dart';
 import '../../../shared/widgets/forms/app_text_field.dart';
+import 'package:drift/drift.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class AddTableDialog extends StatefulWidget {
+import '../../../data/database/app_database.dart';
+import '../../../data/database/enums.dart';
+import '../../../data/database/providers/database_provider.dart';
+class AddTableDialog extends ConsumerStatefulWidget {
   const AddTableDialog({super.key});
 
   @override
-  State<AddTableDialog> createState() => _AddTableDialogState();
+  ConsumerState<AddTableDialog> createState() => _AddTableDialogState();
 }
 
-class _AddTableDialogState extends State<AddTableDialog> {
+class _AddTableDialogState extends ConsumerState<AddTableDialog> {
   final _nameController = TextEditingController();
   final _capacityController = TextEditingController();
 
@@ -55,10 +60,29 @@ class _AddTableDialogState extends State<AddTableDialog> {
           width: 120,
           child: AppButton(
             text: "Əlavə et",
-            onPressed: () {
-              // TODO: Riverpod + Repository
-              Navigator.pop(context);
-            },
+          onPressed: () async {
+  final name = _nameController.text.trim();
+
+  if (name.isEmpty) return;
+
+  final capacity =
+      int.tryParse(_capacityController.text) ?? 4;
+
+  final repository = ref.read(tableRepositoryProvider);
+
+  await repository.insert(
+    RestaurantTablesCompanion.insert(
+      name: name,
+      capacity: Value(capacity),
+      displayOrder: const Value(0),
+      status: const Value(TableStatus.available),
+    ),
+  );
+
+  if (mounted) {
+    Navigator.pop(context);
+  }
+},
           ),
         ),
       ],
