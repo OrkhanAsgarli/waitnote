@@ -5,7 +5,7 @@ import '../../../core/theme/app_radius.dart';
 import '../../../core/theme/app_spacing.dart';
 import '../../../core/theme/app_text_styles.dart';
 import '../../../data/database/enums.dart';
-import '../../../shared/widgets/app_card.dart';
+import '../../../shared/widgets/cards/app_card.dart';
 
 class TableCard extends StatelessWidget {
   final String tableName;
