@@ -1,9 +1,17 @@
 import 'package:drift/drift.dart';
 import '../tables/order_items.dart';
 import '../app_database.dart';
+import '../tables/products.dart';
+import '../../models/order_item_with_product.dart';
 part 'order_item_dao.g.dart';
 
-@DriftAccessor(tables: [OrderItems])
+
+@DriftAccessor(
+  tables: [
+    OrderItems,
+    Products,
+    ],
+ )
 class OrderItemDao extends DatabaseAccessor<AppDatabase>
     with _$OrderItemDaoMixin {
   OrderItemDao(AppDatabase db) : super(db);
@@ -23,6 +31,18 @@ class OrderItemDao extends DatabaseAccessor<AppDatabase>
           ..where((t) => t.orderId.equals(orderId)))
         .get();
   }
+  Future<OrderItem?> findByOrderAndProduct(
+  int orderId,
+  int productId,
+) {
+  return (select(orderItems)
+        ..where(
+          (t) =>
+              t.orderId.equals(orderId) &
+              t.productId.equals(productId),
+        ))
+      .getSingleOrNull();
+}
 
   Future<int> insert(OrderItemsCompanion item) {
     return into(orderItems).insert(item);
@@ -37,6 +57,26 @@ class OrderItemDao extends DatabaseAccessor<AppDatabase>
           ..where((t) => t.id.equals(id)))
         .go();
   }
+  Stream<List<OrderItemWithProduct>> watchByOrderWithProducts(
+  int orderId,
+) {
+  final query = select(orderItems).join([
+    innerJoin(
+      products,
+      products.id.equalsExp(orderItems.productId),
+    ),
+  ])
+    ..where(orderItems.orderId.equals(orderId));
+
+  return query.watch().map((rows) {
+    return rows.map((row) {
+      return OrderItemWithProduct(
+        item: row.readTable(orderItems),
+        product: row.readTable(products),
+      );
+    }).toList();
+  });
+}
 
   Future<int> deleteByOrder(int orderId) {
     return (delete(orderItems)

@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:project/data/database/providers/database_provider.dart';
 
 import '../../../shared/widgets/forms/app_search_bar.dart';
 import '../../../shared/widgets/states/app_empty.dart';
 import '../widgets/table_filter_chips.dart';
 import '../widgets/table_grid.dart';
 import '../dialogs/add_table_dialog.dart';
+import '../../orders/pages/order_page.dart';
 
 import '../providers/table_provider.dart';
 import '../../../data/database/enums.dart';
@@ -120,6 +122,53 @@ class _TablesPageState extends ConsumerState<TablesPage> {
 
       return TableGrid(
         tables: filtered,
+        onTap: (table) async {
+  final repository = ref.read(orderRepositoryProvider);
+
+  final order = await repository.openOrCreateOrder(
+    table: table,
+  );
+
+  if (!context.mounted) return;
+
+  Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (_) => OrderPage(
+        table: table,
+        order: order,
+      ),
+    ),
+  );
+},
+         onDelete: (table) async {
+    final result = await showDialog<bool>(
+      context: context,
+      builder: (_) => AlertDialog(
+        title: const Text("Masanı sil"),
+        content: Text(
+          "${table.name} silinsin?",
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text("Xeyr"),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: const Text("Sil"),
+          ),
+        ],
+      ),
+    );
+
+    if (result == true) {
+      final repository =
+          ref.read(tableRepositoryProvider);
+
+      await repository.delete(table.id);
+    }
+  },
       );
     },
   ),

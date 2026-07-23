@@ -6,10 +6,14 @@ import 'table_card.dart';
 
 class TableGrid extends StatelessWidget {
   final List<RestaurantTable> tables;
+  final void Function(RestaurantTable table)? onDelete;
+  final void Function(RestaurantTable table)? onTap;
 
   const TableGrid({
     super.key,
     required this.tables,
+    this.onDelete,
+    this.onTap,
   });
 
   @override
@@ -23,10 +27,9 @@ class TableGrid extends StatelessWidget {
           tableName: table.name,
           capacity: table.capacity,
           status: table.status,
+          onDelete: () => onDelete?.call(table),
           totalAmount: 0, // hələlik
-          onTap: () {
-            // TODO: Open Order Screen
-          },
+          onTap: () => onTap?.call(table),
         );
       },
     );

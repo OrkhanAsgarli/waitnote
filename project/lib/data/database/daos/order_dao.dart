@@ -32,6 +32,15 @@ class OrderDao extends DatabaseAccessor<AppDatabase>
         .getSingleOrNull();
   }
 
+  /// Aktiv sifarişi qaytarır
+  Future<Order?> getActiveOrder(int tableId) {
+    return (select(orders)
+          ..where((o) =>
+              o.tableId.equals(tableId) &
+              o.isClosed.equals(false)))
+        .getSingleOrNull();
+  }
+
   Future<int> insert(OrdersCompanion order) {
     return into(orders).insert(order);
   }

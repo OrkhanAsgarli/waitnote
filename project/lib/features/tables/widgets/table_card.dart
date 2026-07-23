@@ -13,6 +13,7 @@ class TableCard extends StatelessWidget {
   final TableStatus status;
   final double? totalAmount;
   final VoidCallback? onTap;
+  final VoidCallback? onDelete;
 
   const TableCard({
     super.key,
@@ -21,6 +22,7 @@ class TableCard extends StatelessWidget {
     required this.status,
     this.totalAmount,
     this.onTap,
+    this.onDelete,
   });
 
   Color get statusColor {
@@ -69,23 +71,35 @@ class TableCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            children: [
-              CircleAvatar(
-                radius: 18,
-                backgroundColor: statusColor.withValues(alpha: 0.15),
-                child: Icon(
-                  statusIcon,
-                  color: statusColor,
-                ),
-              ),
-              const Spacer(),
-              Text(
-                tableName,
-                style: AppTextStyles.title,
-              ),
-            ],
-          ),
+         Row(
+  children: [
+    CircleAvatar(
+      radius: 18,
+      backgroundColor: statusColor.withValues(alpha: 0.15),
+      child: Icon(
+        statusIcon,
+        color: statusColor,
+      ),
+    ),
+
+    const SizedBox(width: 12),
+
+    Expanded(
+      child: Text(
+        tableName,
+        style: AppTextStyles.title,
+      ),
+    ),
+
+    IconButton(
+      onPressed: onDelete,
+      icon: const Icon(
+        Icons.delete_outline,
+        color: Colors.red,
+      ),
+    ),
+  ],
+),
 
           const SizedBox(height: AppSpacing.lg),
 
