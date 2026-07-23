@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../data/database/app_database.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
+import '../../../data/database/enums.dart';
 import '../providers/order_items_with_product_provider.dart';
 import '../widgets/product_picker_bottom_sheet.dart';
 import '../../../data/database/providers/database_provider.dart';
@@ -153,15 +153,17 @@ return Card(
       ),
     ),
 
-    Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        border: const Border(
-          top: BorderSide(color: Colors.black12),
-        ),
-        color: Theme.of(context).cardColor,
-      ),
-      child: Row(
+Container(
+  padding: const EdgeInsets.all(16),
+  decoration: BoxDecoration(
+    border: const Border(
+      top: BorderSide(color: Colors.black12),
+    ),
+    color: Theme.of(context).cardColor,
+  ),
+  child: Column(
+    children: [
+      Row(
         children: [
           const Text(
             "Ümumi",
@@ -181,7 +183,37 @@ return Card(
           ),
         ],
       ),
-    ),
+
+      const SizedBox(height: 16),
+
+      SizedBox(
+        width: double.infinity,
+        child: FilledButton.icon(
+          icon: const Icon(Icons.check_circle),
+          label: const Text("Hesabı Bağla"),
+          onPressed: () async {
+            final orderRepository =
+                ref.read(orderRepositoryProvider);
+
+            final tableRepository =
+                ref.read(tableRepositoryProvider);
+
+            await orderRepository.closeOrder(order.id);
+
+            await tableRepository.updateStatus(
+              table.id,
+              TableStatus.available,
+            );
+
+            if (context.mounted) {
+              Navigator.pop(context);
+            }
+          },
+        ),
+      ),
+    ],
+  ),
+)
   ],
 );
 

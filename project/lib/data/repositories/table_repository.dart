@@ -1,5 +1,5 @@
 import 'package:project/data/database/daos/table_dao.dart';
-
+import '../database/enums.dart';
 import '../database/app_database.dart';
 
 class TableRepository {
@@ -26,4 +26,15 @@ class TableRepository {
   Future<int> delete(int id) {
     return _dao.deleteById(id);
   }
+  
+  Future<bool> updateStatus(
+  int tableId,
+  TableStatus status,
+) {
+  return _dao.updateStatus(
+    tableId,
+    status,
+  );
+}
+
 }

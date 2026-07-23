@@ -46,4 +46,7 @@ Future<Order> openOrCreateOrder({
 
   return (await _dao.getById(orderId))!;
 }
+Future<bool> closeOrder(int orderId) {
+  return _dao.closeOrder(orderId);
+}
 }

@@ -1,7 +1,9 @@
 import 'package:drift/drift.dart';
 import '../tables/restaurant_tables.dart';
 import '../app_database.dart';
+import '../enums.dart';
 part 'table_dao.g.dart';
+
 @DriftAccessor(tables: [RestaurantTables])
 class TableDao extends DatabaseAccessor<AppDatabase>
     with _$TableDaoMixin {
@@ -32,4 +34,18 @@ class TableDao extends DatabaseAccessor<AppDatabase>
           ..where((t) => t.id.equals(id)))
         .go();
   }
+  Future<bool> updateStatus(
+  int tableId,
+  TableStatus status,
+) {
+  return (update(restaurantTables)
+        ..where((t) => t.id.equals(tableId)))
+      .write(
+        RestaurantTablesCompanion(
+          status: Value(status),
+          updatedAt: Value(DateTime.now()),
+        ),
+      )
+      .then((rows) => rows > 0);
+}
 }

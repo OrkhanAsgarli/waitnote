@@ -54,4 +54,16 @@ class OrderDao extends DatabaseAccessor<AppDatabase>
           ..where((t) => t.id.equals(id)))
         .go();
   }
+  Future<bool> closeOrder(int orderId) {
+  return (update(orders)
+        ..where((o) => o.id.equals(orderId)))
+      .write(
+        OrdersCompanion(
+          isClosed: const Value(true),
+          finishedAt: Value(DateTime.now()),
+          updatedAt: Value(DateTime.now()),
+        ),
+      )
+      .then((rows) => rows > 0);
+}
 }
