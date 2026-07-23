@@ -29,6 +29,7 @@ final orderRepositoryProvider =
     Provider<OrderRepository>((ref) {
   return OrderRepository(
     ref.watch(orderDaoProvider),
+    ref.watch(tableRepositoryProvider),
   );
 });
 final orderItemDaoProvider = Provider<OrderItemDao>((ref) {

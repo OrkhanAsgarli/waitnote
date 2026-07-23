@@ -1,10 +1,17 @@
 import '../database/app_database.dart';
 import '../database/daos/order_dao.dart';
+import 'table_repository.dart';
+import '../database/enums.dart';
+import '../models/order_with_table.dart';
 
 class OrderRepository {
-  final OrderDao _dao;
+final OrderDao _dao;
+final TableRepository _tableRepository;
 
-  OrderRepository(this._dao);
+OrderRepository(
+  this._dao,
+  this._tableRepository,
+);
 
   Stream<List<Order>> watchAll() {
     return _dao.watchAll();
@@ -37,16 +44,45 @@ Future<Order> openOrCreateOrder({
     return active;
   }
 
-  final orderId = await _dao.insert(
-    OrdersCompanion.insert(
-      orderNumber: DateTime.now().millisecondsSinceEpoch,
-      tableId: table.id,
-    ),
-  );
+final lastOrder = await _dao.getLastOrder();
 
-  return (await _dao.getById(orderId))!;
+final nextNumber =
+    (lastOrder?.orderNumber ?? 0) + 1;
+
+final orderId = await _dao.insert(
+  OrdersCompanion.insert(
+    orderNumber: nextNumber,
+    tableId: table.id,
+  ),
+);
+
+await _tableRepository.updateStatus(
+  table.id,
+  TableStatus.occupied,
+);
+
+return (await _dao.getById(orderId))!;
 }
-Future<bool> closeOrder(int orderId) {
-  return _dao.closeOrder(orderId);
+Future<bool> closeOrder(int orderId) async {
+  final order = await _dao.getById(orderId);
+
+  if (order == null) {
+    return false;
+  }
+
+  final success = await _dao.closeOrder(orderId);
+
+  if (success) {
+    await _tableRepository.updateStatus(
+      order.tableId,
+      TableStatus.available,
+    );
+  }
+
+  return success;
+}
+Stream<List<OrderWithTable>> watchAllWithTables() {
+  return _dao.watchAllWithTables();
 }
 }
+

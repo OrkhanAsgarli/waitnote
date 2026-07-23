@@ -2,10 +2,17 @@ import 'package:drift/drift.dart';
 
 import '../app_database.dart';
 import '../tables/orders.dart';
+import '../../models/order_with_table.dart';
+import '../tables/restaurant_tables.dart';
 
 part 'order_dao.g.dart';
 
-@DriftAccessor(tables: [Orders])
+@DriftAccessor(
+  tables: [
+    Orders,
+    RestaurantTables,
+    ],
+    )
 class OrderDao extends DatabaseAccessor<AppDatabase>
     with _$OrderDaoMixin {
   OrderDao(AppDatabase db) : super(db);
@@ -65,5 +72,32 @@ class OrderDao extends DatabaseAccessor<AppDatabase>
         ),
       )
       .then((rows) => rows > 0);
+}Stream<List<OrderWithTable>> watchAllWithTables() {
+  final query = select(orders).join([
+    innerJoin(
+      restaurantTables,
+      restaurantTables.id.equalsExp(orders.tableId),
+    ),
+  ])
+    ..orderBy([
+      OrderingTerm.desc(orders.createdAt),
+    ]);
+
+  return query.watch().map((rows) {
+    return rows.map((row) {
+      return OrderWithTable(
+        order: row.readTable(orders),
+        table: row.readTable(restaurantTables),
+      );
+    }).toList();
+  });
+}
+Future<Order?> getLastOrder() {
+  return (select(orders)
+        ..orderBy([
+          (o) => OrderingTerm.desc(o.orderNumber),
+        ])
+        ..limit(1))
+      .getSingleOrNull();
 }
 }
