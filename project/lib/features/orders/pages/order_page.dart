@@ -78,22 +78,77 @@ return Column(
           final total =
               row.item.unitPrice * row.item.quantity;
 
-          return ListTile(
-            leading: const Icon(Icons.restaurant_menu),
+        final repository = ref.read(orderItemRepositoryProvider);
 
-            title: Text(row.product.name),
+return Card(
+  margin: const EdgeInsets.symmetric(
+    horizontal: 12,
+    vertical: 6,
+  ),
+  child: Padding(
+    padding: const EdgeInsets.all(16),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          row.product.name,
+          style: const TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
 
-            subtitle: Text(
-              "Miqdar: ${row.item.quantity}",
+        const SizedBox(height: 12),
+
+        Row(
+          children: [
+            IconButton(
+              icon: const Icon(
+                Icons.remove_circle,
+                color: Colors.red,
+              ),
+              onPressed: () async {
+                await repository.decreaseQuantity(
+                  row.item,
+                );
+              },
             ),
 
-            trailing: Text(
-              "${(total / 100).toStringAsFixed(2)} ₼",
+            Text(
+              "${row.item.quantity}",
               style: const TextStyle(
+                fontSize: 18,
                 fontWeight: FontWeight.bold,
               ),
             ),
-          );
+
+            IconButton(
+              icon: const Icon(
+                Icons.add_circle,
+                color: Colors.green,
+              ),
+              onPressed: () async {
+                await repository.increaseQuantity(
+                  row.item,
+                );
+              },
+            ),
+
+            const Spacer(),
+
+            Text(
+              "${(total / 100).toStringAsFixed(2)} ₼",
+              style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+        ),
+      ],
+    ),
+  ),
+);
         },
       ),
     ),

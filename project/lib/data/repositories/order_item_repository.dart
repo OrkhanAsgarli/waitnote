@@ -48,4 +48,24 @@ Future<OrderItem?> findByOrderAndProduct(
     productId,
   );
 }
+Future<void> increaseQuantity(OrderItem item) async {
+  await update(
+    item.copyWith(
+      quantity: item.quantity + 1,
+    ),
+  );
+}
+
+Future<void> decreaseQuantity(OrderItem item) async {
+  if (item.quantity <= 1) {
+    await delete(item.id);
+    return;
+  }
+
+  await update(
+    item.copyWith(
+      quantity: item.quantity - 1,
+    ),
+  );
+}
 }
