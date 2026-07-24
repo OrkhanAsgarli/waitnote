@@ -101,5 +101,20 @@ Future<Order?> getLastOrder() {
         ])
         ..limit(1))
       .getSingleOrNull();
+      
+}
+Future<bool> updateNote(
+  int orderId,
+  String? note,
+) {
+  return (update(orders)
+        ..where((o) => o.id.equals(orderId)))
+      .write(
+        OrdersCompanion(
+          note: Value(note),
+          updatedAt: Value(DateTime.now()),
+        ),
+      )
+      .then((rows) => rows > 0);
 }
 }

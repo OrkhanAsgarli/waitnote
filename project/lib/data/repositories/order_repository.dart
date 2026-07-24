@@ -84,5 +84,15 @@ Future<bool> closeOrder(int orderId) async {
 Stream<List<OrderWithTable>> watchAllWithTables() {
   return _dao.watchAllWithTables();
 }
+Future<bool> updateNote(
+  int orderId,
+  String? note,
+) {
+  return _dao.updateNote(
+    orderId,
+    note,
+  );
 }
+}
+
 
