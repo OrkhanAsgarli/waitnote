@@ -6,7 +6,7 @@
 <h1 align="center">WaitNote</h1>
 
 <p align="center">
-  Restoran və kafelər üçün sifariş, masa və məhsul idarəetmə tətbiqi — Flutter ilə hazırlanıb.
+  Restoran və kafelər üçün sifariş, masa və məhsul idarəetmə tətbiqi Əsas Məqsəd Ofisiantlar Üçün Hazırlanmışdır  — Flutter ilə hazırlanıb.
 </p>
 
 <p align="center">
