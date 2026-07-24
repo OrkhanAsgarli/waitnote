@@ -72,7 +72,9 @@ class OrderDao extends DatabaseAccessor<AppDatabase>
         ),
       )
       .then((rows) => rows > 0);
-}Stream<List<OrderWithTable>> watchAllWithTables() {
+}
+
+Stream<List<OrderWithTable>> watchAllWithTables() {
   final query = select(orders).join([
     innerJoin(
       restaurantTables,

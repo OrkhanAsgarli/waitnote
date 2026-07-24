@@ -26,7 +26,7 @@ class OrderCard extends StatelessWidget {
         onTap: onTap,
 
         leading: CircleAvatar(
-          child: Text(table.name),
+          child: Text(order.orderNumber.toString()),
         ),
 
         title: Text(
@@ -43,8 +43,8 @@ class OrderCard extends StatelessWidget {
             Text("#${order.orderNumber}"),
             Text(
               order.isClosed
-                  ? "Bağlanıb"
-                  : "Açıq",
+                  ? "⚫ Bağlanıb"
+                  : "🟢 Açıq",
             ),
           ],
         ),
