@@ -30,9 +30,10 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
+  
   cupertino_icons: ^1.0.8
 
+  rxdart: ^0.28.0
   # State Management
   flutter_riverpod: ^2.6.1
 

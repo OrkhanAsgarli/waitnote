@@ -122,7 +122,15 @@ class _TablesPageState extends ConsumerState<TablesPage> {
 
       return TableGrid(
         tables: filtered,
-        onTap: (table) async {
+          onEdit: (table) async {
+    await showDialog(
+      context: context,
+      builder: (_) => AddTableDialog(
+        table: table,
+      ),
+    );
+  },
+  onTap: (table) async {
   final repository = ref.read(orderRepositoryProvider);
 
   final order = await repository.openOrCreateOrder(

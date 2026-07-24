@@ -14,6 +14,7 @@ class TableCard extends StatelessWidget {
   final double? totalAmount;
   final VoidCallback? onTap;
   final VoidCallback? onDelete;
+  final VoidCallback? onEdit;
 
   const TableCard({
     super.key,
@@ -22,6 +23,7 @@ class TableCard extends StatelessWidget {
     required this.status,
     this.totalAmount,
     this.onTap,
+    this.onEdit,
     this.onDelete,
   });
 
@@ -91,6 +93,16 @@ class TableCard extends StatelessWidget {
       ),
     ),
 
+Row(
+  mainAxisSize: MainAxisSize.min,
+  children: [
+    IconButton(
+      onPressed: onEdit,
+      icon: const Icon(
+        Icons.edit_outlined,
+      ),
+    ),
+
     IconButton(
       onPressed: onDelete,
       icon: const Icon(
@@ -98,6 +110,8 @@ class TableCard extends StatelessWidget {
         color: Colors.red,
       ),
     ),
+  ],
+),
   ],
 ),
 

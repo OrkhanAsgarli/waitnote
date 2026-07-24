@@ -9,7 +9,12 @@ import '../../../data/database/app_database.dart';
 import '../../../data/database/enums.dart';
 import '../../../data/database/providers/database_provider.dart';
 class AddTableDialog extends ConsumerStatefulWidget {
-  const AddTableDialog({super.key});
+  final RestaurantTable? table;
+
+const AddTableDialog({
+  super.key,
+  this.table,
+});
 
   @override
   ConsumerState<AddTableDialog> createState() => _AddTableDialogState();
@@ -20,6 +25,16 @@ class _AddTableDialogState extends ConsumerState<AddTableDialog> {
   final _capacityController = TextEditingController();
 
   @override
+void initState() {
+  super.initState();
+
+  if (widget.table != null) {
+    _nameController.text = widget.table!.name;
+    _capacityController.text =
+        widget.table!.capacity.toString();
+  }
+}
+@override
   void dispose() {
     _nameController.dispose();
     _capacityController.dispose();
@@ -29,7 +44,11 @@ class _AddTableDialogState extends ConsumerState<AddTableDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text("Yeni Masa"),
+      title: Text(
+  widget.table == null
+      ? "Yeni Masa"
+      : "Masanı Redaktə Et",
+),
 
       content: SingleChildScrollView(
         child: Column(
@@ -59,7 +78,9 @@ class _AddTableDialogState extends ConsumerState<AddTableDialog> {
         SizedBox(
           width: 120,
           child: AppButton(
-            text: "Əlavə et",
+            text: widget.table == null
+    ? "Əlavə et"
+    : "Yadda saxla",
           onPressed: () async {
   final name = _nameController.text.trim();
 
@@ -70,6 +91,7 @@ class _AddTableDialogState extends ConsumerState<AddTableDialog> {
 
   final repository = ref.read(tableRepositoryProvider);
 
+if (widget.table == null) {
   await repository.insert(
     RestaurantTablesCompanion.insert(
       name: name,
@@ -78,6 +100,14 @@ class _AddTableDialogState extends ConsumerState<AddTableDialog> {
       status: const Value(TableStatus.available),
     ),
   );
+} else {
+  await repository.update(
+    widget.table!.copyWith(
+      name: name,
+      capacity: capacity,
+    ),
+  );
+}
 
   if (mounted) {
     Navigator.pop(context);

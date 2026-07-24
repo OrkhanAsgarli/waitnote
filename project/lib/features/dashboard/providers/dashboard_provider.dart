@@ -12,8 +12,8 @@ final dashboardServiceProvider =
 });
 
 final dashboardProvider =
-    FutureProvider((ref) async {
+    StreamProvider((ref) {
   return ref
       .watch(dashboardServiceProvider)
-      .load();
+      .watchDashboard();
 });
