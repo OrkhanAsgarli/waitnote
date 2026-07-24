@@ -114,9 +114,7 @@ Pull request-lər və issue-lar açıqdır. Böyük dəyişikliklər üçün əv
 
 ## 📄 Layihə Fotoları
 ---
-## 📸 Screenshots
 
-## 📸 Screenshots
 
 <p align="center">
   <img src="https://github.com/user-attachments/assets/58fa433b-941d-4694-9261-dda5df6e9e52" width="220"/>
