@@ -1,5 +1,6 @@
 <p align="center">
-  <img src="project/assets/icon/logo.png" alt="WaitNote Logo" width="120"/>
+  <img width="400" height="400" alt="gemini-svg" src="https://github.com/user-attachments/assets/db0602e6-8fd7-4e0b-aab1-bff8ba7edfe7" />
+
 </p>
 
 <h1 align="center">WaitNote</h1>
