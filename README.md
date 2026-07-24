@@ -114,7 +114,7 @@ Pull request-lər və issue-lar açıqdır. Böyük dəyişikliklər üçün əv
 
 ## 📄 Layihə Fotoları
 ---
-<img width="1469" height="3104" alt="Screenshot_20260724_223536" src="https://github.com/user-attachments/assets/72fd7e4c-3fc8-4dd8-b1f1-e05070f60ce5" />
+<img width="1000" height="1800" alt="Screenshot_20260724_223536" src="https://github.com/user-attachments/assets/72fd7e4c-3fc8-4dd8-b1f1-e05070f60ce5" />
 <img width="1469" height="3104" alt="Screenshot_20260724_223530" src="https://github.com/user-attachments/assets/efc68961-c739-474a-8eb3-fd43e768aa8c" />
 <img width="1469" height="3104" alt="Screenshot_20260724_223517" src="https://github.com/user-attachments/assets/3df6ef51-0a1b-46ce-ad10-b48cd36c2ec1" />
 <img width="1469" height="3104" alt="Screenshot_20260724_223508" src="https://github.com/user-attachments/assets/8b81df97-d99f-4f66-85fe-118b670cfb46" />
